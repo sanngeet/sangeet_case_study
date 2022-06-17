@@ -40,23 +40,14 @@ class ProductController extends Controller
             'developerEmail' => 'required|email:rfc'
         ]);
 
-        // Check if product with same name already exists in the database
-        $recordExists = Product::where('name', $request->name)->count();
-        if($recordExists){
-            $response = array(
-                'message' => 'Product already exists.'
-            );
-            return response()->json($response, 400);
-        }else{  
-            // Create new product if the name is unique
-            $product = Product::create($request->all());
+        // Create new product 
+        $product = Product::create($request->all());
 
-            return DB::table('products as p')
-            ->select('p.*','c.name as categoryName')
-            ->Join('categories as c', 'c.id', '=', 'p.categoryId')
-            ->where('p.id', $product->id)
-            ->get();
-        }
+        return DB::table('products as p')
+        ->select('p.*','c.name as categoryName')
+        ->Join('categories as c', 'c.id', '=', 'p.categoryId')
+        ->where('p.id', $product->id)
+        ->get();
     }
 
     /**
