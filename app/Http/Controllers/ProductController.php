@@ -32,12 +32,12 @@ class ProductController extends Controller
     {
         // Validate request
         $request->validate([
-            'categoryId' => 'required',
-            'name' => "required",
-            'price' => 'required',
-            'description' => 'required',
-            'avatar' => 'required',
-            'developerEmail' => 'required'
+            'categoryId' => 'required|numeric|max:8',
+            'name' => "required|string|unique:products,name",
+            'price' => 'required|numeric|min:1',
+            'description' => 'required|string',
+            'avatar' => 'required|string',
+            'developerEmail' => 'required|email:rfc'
         ]);
 
         // Check if product with same name already exists in the database
@@ -83,8 +83,22 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Get the product by ID
-        $product = Product::find($id);
+         // Get the product by ID
+         $product = Product::find($id);
+
+         if(!$product){
+            return response()->json(['message' => 'Invalid Id'], 400);
+         }
+
+         // Validate request
+         $request->validate([
+            'categoryId' => 'required|numeric|max:8',
+            'name' => "required|string|unique:products,name,".$id,
+            'price' => 'required|numeric|min:1',
+            'description' => 'required|string',
+            'avatar' => 'required|string',
+            'developerEmail' => 'required|email:rfc'
+        ]);
 
         // Add updated field in the request body
         $request->request->set('updated', date('Y-m-d H:i:s'));

@@ -69,8 +69,8 @@ class CartController extends Controller
 
         // Validate request
         $request->validate([
-            'productId' => "required",
-            'quantity' => 'required'
+            'productId' => "required|numeric",
+            'quantity' => 'required|numeric|max:10'
         ]);
 
         // Get userId from the bearerToken
@@ -91,7 +91,7 @@ class CartController extends Controller
             return response()->json($response, 400);
         }
 
-        // Get cart items based on userId or sessionId
+        // Get cart item based on cart id and (userId or sessionId)
         $db = DB::table('cart')
         ->where('productId', $productId);
 
@@ -110,7 +110,7 @@ class CartController extends Controller
             );
             return response()->json($response, 400);
         }else{
-            // Create new cart
+            // Create new cart item
             $request->request->set('sessionId', $sessionId);
             $request->request->set('userId', $userId);
             return Cart::create($request->all());
@@ -130,7 +130,7 @@ class CartController extends Controller
 
         // Validate request
         $request->validate([
-            'quantity' => 'required'
+            'quantity' => 'required|numeric|max:10'
         ]);
 
         // Get userId from the bearerToken
@@ -150,7 +150,7 @@ class CartController extends Controller
             return response()->json($response, 400);
         }
 
-        // Get cart items based on userId or sessionId
+        // Get cart item based on cart id and (userId or sessionId)
         $db = Cart::where('id',$id);
         if($userId){
             $db->where('userId', $userId);
@@ -167,7 +167,8 @@ class CartController extends Controller
             return response()->json($response, 400);
         }
 
-        // Update quantity of the item along with datetime
+        // Update quantity of the item along with 
+        //sessionId (if present), userId(if present) & datetime
         $request->request->set('sessionId', $sessionId);
         $request->request->set('userId', $userId);
         $request->request->set('updated', date('Y-m-d H:i:s'));
@@ -203,8 +204,9 @@ class CartController extends Controller
             return response()->json($response, 400);
         }
 
-        // Get cart items based on userId or sessionId
-        $db = DB::table('cart');
+        // Get cart item based on cart id & (userId or sessionId)
+        // Use id and (userId or sessionId) to make sure only the authorized user deletes the items
+        $db = Cart::where('id',$id);
         if($userId){
             $db->where('userId', $userId);
         }else{
@@ -212,7 +214,7 @@ class CartController extends Controller
         }
         $cart = $db->first();
 
-          // Return Error if no cart is found
+        // Return Error if no cart is found
         if(!$cart){
             $response = array(
                 'message' => 'Invalid Request'
