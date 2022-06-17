@@ -5,33 +5,43 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Collection;
 
 class CartController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
+     * List cart items by sessionId or userId.
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Cart::all();
+        $sessionId = $request->header('X-AUTH-TOKEN', 0);
+        $cart = DB::table('cart')->where('sessionId', $sessionId)->get();
+
+        if(!$cart){
+            $response = array(
+                'message' => 'Invalid Request'
+            );
+            return response()->json($response, 200);
+        }
+
+        return $cart;
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
+     * Store a newly created resource in storage
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
+        // Validate request
         $request->validate([
             'sessionId' => 'required',
             'productId' => "required",
             'quantity' => 'required'
         ]);
-
 
         $sessionId = $request->sessionId;
         $productId = $request->productId;
@@ -58,50 +68,58 @@ class CartController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        return Cart::find($id);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
+     * Update the specified cart item quantity in storage.
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        $cart = Cart::find($id);
+
+        // Validate request
+        $request->validate([
+            'quantity' => 'required'
+        ]);
+
+        $sessionId = $request->header('X-AUTH-TOKEN', 0);
+
+        $cart = Cart::where('id',$id)
+        ->where('sessionId', $sessionId)
+        ->first();
+
+        if(!$cart){
+            $response = array(
+                'message' => 'Invalid Request'
+            );
+            return response()->json($response, 400);
+        }
+
         $request->request->set('updated', date('Y-m-d H:i:s'));
         $cart->update($request->all());
         return $cart;
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
+     * Remove the specified cart item from storage.
      * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        return Cart::destroy($id);
-    }
+        $sessionId = $request->header('X-AUTH-TOKEN', 0);
 
-     /**
-     * Search by sessionId.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function search($id)
-    {
-        return Cart::where('sessionId', $id)->get();
+        $cart = Cart::where('id',$id)
+        ->where('sessionId', $sessionId)
+        ->first();
+
+        if(!$cart){
+            $response = array(
+                'message' => 'Invalid Request'
+            );
+            return response()->json($response, 400);
+        }
+        
+        return Cart::destroy($id);
     }
 }
