@@ -1,6 +1,9 @@
 ## Ecommerce API Project
 
-Ecommerce API Project with the following Features:
+The sql file is present at "database/upayments.sql" location. 
+Make sure to import the file into your database.
+
+API Routes:
 
 - User - Registration
 - User - Login
