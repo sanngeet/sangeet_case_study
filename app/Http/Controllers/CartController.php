@@ -27,6 +27,7 @@ class CartController extends Controller
             $userId = DB::table('users')->select('id')->where('id', $v->tokenable_id)->first()->id;
         }
 
+        // Return Error if userId and sessionId are missing
         if(!$userId && !$sessionId){
             $response = array(
                 'message' => 'Invalid Request'
@@ -34,6 +35,7 @@ class CartController extends Controller
             return response()->json($response, 400);
         }
 
+        // Get cart items based on userId or sessionId
         $db = DB::table('cart');
         if($userId){
             $db->where('userId', $userId);
@@ -42,6 +44,7 @@ class CartController extends Controller
         }
         $cart = $db->get();
 
+        // Return Error if no cart is found
         if(!$cart){
             $response = array(
                 'message' => 'Invalid Request'
@@ -60,6 +63,7 @@ class CartController extends Controller
     public function store(Request $request)
     {
         $userId = null;
+        $sessionId = $request->header('X-AUTH-TOKEN', null);
 
         // Validate request
         $request->validate([
@@ -73,9 +77,9 @@ class CartController extends Controller
             $v = DB::table('personal_access_tokens')->where('id', $token)->first();
             $userId = DB::table('users')->select('id')->where('id', $v->tokenable_id)->first()->id;
         }
-        $sessionId = $request->header('X-AUTH-TOKEN', null);
         $productId = $request->productId;
 
+        // Return Error if userId and sessionId are missing
         if(!$userId && !$sessionId){
             $response = array(
                 'message' => 'Invalid Request'
@@ -83,6 +87,7 @@ class CartController extends Controller
             return response()->json($response, 400);
         }
 
+        // Get cart items based on userId or sessionId
         $db = DB::table('cart')
         ->where('productId', $productId);
 
@@ -93,12 +98,15 @@ class CartController extends Controller
         }
         $recordExists = $db->count();
 
+        // Throw error if productId+userId or productId+sessionId are already present
+        // These records can only be updated, can't be created again
         if($recordExists){
             $response = array(
                 'message' => 'Item already added to the cart.'
             );
             return response()->json($response, 400);
         }else{
+            // Create new cart
             $request->request->set('sessionId', $sessionId);
             $request->request->set('userId', $userId);
             return Cart::create($request->all());
@@ -113,6 +121,8 @@ class CartController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $userId = null;
+        $sessionId = $request->header('X-AUTH-TOKEN', null);
 
         // Validate request
         $request->validate([
@@ -126,8 +136,15 @@ class CartController extends Controller
             $userId = DB::table('users')->select('id')->where('id', $v->tokenable_id)->first()->id;
         }
 
-        $sessionId = $request->header('X-AUTH-TOKEN', 0);
+        // Return Error if userId and sessionId are missing
+        if(!$userId && !$sessionId){
+            $response = array(
+                'message' => 'Invalid Request'
+            );
+            return response()->json($response, 400);
+        }
 
+        // Get cart items based on userId or sessionId
         $db = Cart::where('id',$id);
         if($userId){
             $db->where('userId', $userId);
@@ -136,6 +153,7 @@ class CartController extends Controller
         }
         $cart = $db->first();
 
+        // Return Error if no cart is found
         if(!$cart){
             $response = array(
                 'message' => 'Invalid Request'
@@ -143,6 +161,7 @@ class CartController extends Controller
             return response()->json($response, 400);
         }
 
+        // Update quantity of the item along with datetime
         $request->request->set('sessionId', $sessionId);
         $request->request->set('userId', $userId);
         $request->request->set('updated', date('Y-m-d H:i:s'));
@@ -158,6 +177,7 @@ class CartController extends Controller
      */
     public function destroy($id, Request $request)
     {
+        $userId = null;
         $sessionId = $request->header('X-AUTH-TOKEN', null);
 
         // Get userId from the bearerToken
@@ -167,6 +187,7 @@ class CartController extends Controller
             $userId = DB::table('users')->select('id')->where('id', $v->tokenable_id)->first()->id;
         }
 
+         // Return Error if userId and sessionId are missing
         if(!$userId && !$sessionId){
             $response = array(
                 'message' => 'Invalid Request'
@@ -174,6 +195,7 @@ class CartController extends Controller
             return response()->json($response, 400);
         }
 
+        // Get cart items based on userId or sessionId
         $db = DB::table('cart');
         if($userId){
             $db->where('userId', $userId);
@@ -182,6 +204,7 @@ class CartController extends Controller
         }
         $cart = $db->first();
 
+          // Return Error if no cart is found
         if(!$cart){
             $response = array(
                 'message' => 'Invalid Request'
@@ -189,11 +212,7 @@ class CartController extends Controller
             return response()->json($response, 400);
         }
         
+        // Delete cart item
         return Cart::destroy($id);
     }
-
-    public function userdata(){
-        $id = auth()->guard('agent')->user()->id; // just id
-        return $id;
-     }
 }
