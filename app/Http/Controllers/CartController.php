@@ -23,8 +23,10 @@ class CartController extends Controller
         // Get userId from the bearerToken
         if($request->bearerToken()){
             $token = $request->bearerToken();
-            $v = DB::table('personal_access_tokens')->where('id', $token)->first();
-            $userId = DB::table('users')->select('id')->where('id', $v->tokenable_id)->first()->id;
+            $accessTokenRecord = DB::table('personal_access_tokens')->where('id', $token)->first();
+            if($accessTokenRecord){
+                $userId = DB::table('users')->select('id')->where('id', $accessTokenRecord->tokenable_id)->first()->id;
+            }
         }
 
         // Return Error if userId and sessionId are missing
@@ -74,8 +76,10 @@ class CartController extends Controller
         // Get userId from the bearerToken
         if($request->bearerToken()){
             $token = $request->bearerToken();
-            $v = DB::table('personal_access_tokens')->where('id', $token)->first();
-            $userId = DB::table('users')->select('id')->where('id', $v->tokenable_id)->first()->id;
+            $accessTokenRecord = DB::table('personal_access_tokens')->where('id', $token)->first();
+            if($accessTokenRecord){
+                $userId = DB::table('users')->select('id')->where('id', $accessTokenRecord->tokenable_id)->first()->id;
+            }
         }
         $productId = $request->productId;
 
@@ -132,8 +136,10 @@ class CartController extends Controller
         // Get userId from the bearerToken
         if($request->bearerToken()){
             $token = $request->bearerToken();
-            $v = DB::table('personal_access_tokens')->where('id', $token)->first();
-            $userId = DB::table('users')->select('id')->where('id', $v->tokenable_id)->first()->id;
+            $accessTokenRecord = DB::table('personal_access_tokens')->where('id', $token)->first();
+            if($accessTokenRecord){
+                $userId = DB::table('users')->select('id')->where('id', $accessTokenRecord->tokenable_id)->first()->id;
+            }
         }
 
         // Return Error if userId and sessionId are missing
@@ -183,8 +189,10 @@ class CartController extends Controller
         // Get userId from the bearerToken
         if($request->bearerToken()){
             $token = $request->bearerToken();
-            $v = DB::table('personal_access_tokens')->where('id', $token)->first();
-            $userId = DB::table('users')->select('id')->where('id', $v->tokenable_id)->first()->id;
+            $accessTokenRecord = DB::table('personal_access_tokens')->where('id', $token)->first();
+            if($accessTokenRecord){
+                $userId = DB::table('users')->select('id')->where('id', $accessTokenRecord->tokenable_id)->first()->id;
+            }
         }
 
          // Return Error if userId and sessionId are missing
@@ -213,6 +221,18 @@ class CartController extends Controller
         }
         
         // Delete cart item
-        return Cart::destroy($id);
+        $deleted = Cart::destroy($id);
+        if($deleted){
+            $response = array(
+                'message' => 'Item deleted'
+            );
+            $statusCode = 200;
+        }else{
+            $response = array(
+                'message' => 'No record found'
+            );
+            $statusCode = 400;
+        }
+        return response()->json($response, $statusCode);
     }
 }

@@ -106,6 +106,18 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        return Product::destroy($id);
+        $deleted = Product::destroy($id);
+        if($deleted){
+            $response = array(
+                'message' => 'Item deleted'
+            );
+            $statusCode = 200;
+        }else{
+            $response = array(
+                'message' => 'No record found'
+            );
+            $statusCode = 400;
+        }
+        return response()->json($response, $statusCode);
     }
 }
