@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProductController extends Controller
 {
@@ -14,7 +16,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Product::all();
+        return DB::table('products as p')
+        ->select('p.*', 'c.name as categoryName')
+        ->Join('categories as c', 'c.id', '=', 'p.categoryId')
+        ->get();
     }
 
     /**
@@ -42,9 +47,15 @@ class ProductController extends Controller
                 'message' => 'Product already exists.'
             );
             return response()->json($response, 400);
-        }else{
+        }else{  
             // Create new product if the name is unique
-            return Product::create($request->all());
+            $product = Product::create($request->all());
+
+            return DB::table('products as p')
+            ->select('p.*','c.name as categoryName')
+            ->Join('categories as c', 'c.id', '=', 'p.categoryId')
+            ->where('p.id', $product->id)
+            ->get();
         }
     }
 
@@ -56,7 +67,11 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        return Product::find($id);
+        return DB::table('products as p')
+        ->select('p.*','c.name as categoryName')
+        ->where('p.id', $id)
+        ->Join('categories as c', 'c.id', '=', 'p.categoryId')
+        ->get();
     }
 
     /**
@@ -75,7 +90,12 @@ class ProductController extends Controller
         $request->request->set('updated', date('Y-m-d H:i:s'));
 
         $product->update($request->all());
-        return $product;
+
+        return DB::table('products as p')
+        ->select('p.*','c.name as categoryName')
+        ->where('p.id', $id)
+        ->Join('categories as c', 'c.id', '=', 'p.categoryId')
+        ->get();
     }
 
     /**

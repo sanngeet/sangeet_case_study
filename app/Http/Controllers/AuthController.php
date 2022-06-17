@@ -26,7 +26,7 @@ class AuthController extends Controller
         ]);
 
         // Create token
-        $token = $user->createToken('upaymentsToken')->plainTextToken;
+        $token = $user->createToken('accessToken')->plainTextToken;
 
         $response = [
             'user' => $user,
