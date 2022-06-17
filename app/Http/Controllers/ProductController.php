@@ -88,7 +88,7 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:1',
             'description' => 'required|string',
             'avatar' => 'required|string',
-            'developerEmail' => 'required|email:rfc'
+            'developerEmail' => 'required|email:rfc|max:320'
         ]);
 
         // Add updated field in the request body
