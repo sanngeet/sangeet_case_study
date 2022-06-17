@@ -49,10 +49,7 @@ class AuthController extends Controller
 
        // Check if user exists and Password Hash is matched
        if(!$user || !Hash::check($fields['password'], $user->password)){
-        $response = [
-            'message' => 'Invalid Credentials'
-        ];
-        
+        $response = ['message' => 'Invalid Credentials'];
         return response($response, 401);
        }
 
@@ -72,9 +69,7 @@ class AuthController extends Controller
         // Delete token
         auth()->user()->tokens()->delete();
 
-        $response = [
-            'message' => 'Logged out'
-        ];
+        $response = ['message' => 'Logged out'];
         
         return response($response, 200);
     }

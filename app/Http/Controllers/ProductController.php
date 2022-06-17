@@ -122,14 +122,10 @@ class ProductController extends Controller
     {
         $deleted = Product::destroy($id);
         if($deleted){
-            $response = array(
-                'message' => 'Item deleted'
-            );
+            $response = array('message' => 'Item deleted');
             $statusCode = 200;
         }else{
-            $response = array(
-                'message' => 'No record found'
-            );
+            $response = array('message' => 'No record found');
             $statusCode = 400;
         }
         return response()->json($response, $statusCode);

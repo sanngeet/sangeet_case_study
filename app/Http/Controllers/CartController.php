@@ -85,9 +85,7 @@ class CartController extends Controller
 
         // Return Error if userId and sessionId are missing
         if(!$userId && !$sessionId){
-            $response = array(
-                'message' => 'Invalid Request'
-            );
+            $response = array('message' => 'Invalid Request');
             return response()->json($response, 400);
         }
 
@@ -105,9 +103,7 @@ class CartController extends Controller
         // Throw error if productId+userId or productId+sessionId are already present
         // These records can only be updated, can't be created again
         if($recordExists){
-            $response = array(
-                'message' => 'Item already added to the cart.'
-            );
+            $response = array('message' => 'Item already added to the cart.');
             return response()->json($response, 400);
         }else{
             // Create new cart item
@@ -129,9 +125,7 @@ class CartController extends Controller
         $sessionId = $request->header('X-AUTH-TOKEN', null);
 
         // Validate request
-        $request->validate([
-            'quantity' => 'required|numeric|max:10'
-        ]);
+        $request->validate(['quantity' => 'required|numeric|max:10']);
 
         // Get userId from the bearerToken
         if($request->bearerToken()){
@@ -144,9 +138,7 @@ class CartController extends Controller
 
         // Return Error if userId and sessionId are missing
         if(!$userId && !$sessionId){
-            $response = array(
-                'message' => 'Invalid Request'
-            );
+            $response = array('message' => 'Invalid Request');
             return response()->json($response, 400);
         }
 
@@ -161,9 +153,7 @@ class CartController extends Controller
 
         // Return Error if no cart is found
         if(!$cart){
-            $response = array(
-                'message' => 'Invalid Request'
-            );
+            $response = array('message' => 'Invalid Request');
             return response()->json($response, 400);
         }
 
@@ -198,9 +188,7 @@ class CartController extends Controller
 
          // Return Error if userId and sessionId are missing
         if(!$userId && !$sessionId){
-            $response = array(
-                'message' => 'Invalid Request'
-            );
+            $response = array('message' => 'Invalid Request');
             return response()->json($response, 400);
         }
 
@@ -216,23 +204,17 @@ class CartController extends Controller
 
         // Return Error if no cart is found
         if(!$cart){
-            $response = array(
-                'message' => 'Invalid Request'
-            );
+            $response = array('message' => 'Invalid Request');
             return response()->json($response, 400);
         }
         
         // Delete cart item
         $deleted = Cart::destroy($id);
         if($deleted){
-            $response = array(
-                'message' => 'Item deleted'
-            );
+            $response = array('message' => 'Item deleted');
             $statusCode = 200;
         }else{
-            $response = array(
-                'message' => 'No record found'
-            );
+            $response = array('message' => 'No record found');
             $statusCode = 400;
         }
         return response()->json($response, $statusCode);
