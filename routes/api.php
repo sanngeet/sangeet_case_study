@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
- 
+
 // Protected Routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
     // Auth
@@ -38,4 +38,3 @@ Route::get('/products/{id}', [ProductController::class, 'show']);
 
 // Cart Routes
 Route::resource('cart',CartController::class);
-Route::get('/cart/search/{id}', [CartController::class, 'search']);

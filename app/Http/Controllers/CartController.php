@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Models\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,8 +17,30 @@ class CartController extends Controller
      */
     public function index(Request $request)
     {
-        $sessionId = $request->header('X-AUTH-TOKEN', 0);
-        $cart = DB::table('cart')->where('sessionId', $sessionId)->get();
+        $userId = null;
+        $sessionId = $request->header('X-AUTH-TOKEN', null);
+
+        // Get userId from the bearerToken
+        if($request->bearerToken()){
+            $token = $request->bearerToken();
+            $v = DB::table('personal_access_tokens')->where('id', $token)->first();
+            $userId = DB::table('users')->select('id')->where('id', $v->tokenable_id)->first()->id;
+        }
+
+        if(!$userId && !$sessionId){
+            $response = array(
+                'message' => 'Invalid Request'
+            );
+            return response()->json($response, 400);
+        }
+
+        $db = DB::table('cart');
+        if($userId){
+            $db->where('userId', $userId);
+        }else{
+            $db->where('sessionId', $sessionId);
+        }
+        $cart = $db->get();
 
         if(!$cart){
             $response = array(
@@ -36,16 +59,29 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
+        $userId = null;
+
         // Validate request
         $request->validate([
-            'sessionId' => 'required',
             'productId' => "required",
             'quantity' => 'required'
         ]);
 
-        $sessionId = $request->sessionId;
+        // Get userId from the bearerToken
+        if($request->bearerToken()){
+            $token = $request->bearerToken();
+            $v = DB::table('personal_access_tokens')->where('id', $token)->first();
+            $userId = DB::table('users')->select('id')->where('id', $v->tokenable_id)->first()->id;
+        }
+        $sessionId = $request->header('X-AUTH-TOKEN', null);
         $productId = $request->productId;
-        $userId = $request->userId ? $request->userId : false;
+
+        if(!$userId && !$sessionId){
+            $response = array(
+                'message' => 'Invalid Request'
+            );
+            return response()->json($response, 400);
+        }
 
         $db = DB::table('cart')
         ->where('productId', $productId);
@@ -63,6 +99,8 @@ class CartController extends Controller
             );
             return response()->json($response, 400);
         }else{
+            $request->request->set('sessionId', $sessionId);
+            $request->request->set('userId', $userId);
             return Cart::create($request->all());
         }
     }
@@ -81,11 +119,22 @@ class CartController extends Controller
             'quantity' => 'required'
         ]);
 
+        // Get userId from the bearerToken
+        if($request->bearerToken()){
+            $token = $request->bearerToken();
+            $v = DB::table('personal_access_tokens')->where('id', $token)->first();
+            $userId = DB::table('users')->select('id')->where('id', $v->tokenable_id)->first()->id;
+        }
+
         $sessionId = $request->header('X-AUTH-TOKEN', 0);
 
-        $cart = Cart::where('id',$id)
-        ->where('sessionId', $sessionId)
-        ->first();
+        $db = Cart::where('id',$id);
+        if($userId){
+            $db->where('userId', $userId);
+        }else{
+            $db->where('sessionId', $sessionId);
+        }
+        $cart = $db->first();
 
         if(!$cart){
             $response = array(
@@ -94,6 +143,8 @@ class CartController extends Controller
             return response()->json($response, 400);
         }
 
+        $request->request->set('sessionId', $sessionId);
+        $request->request->set('userId', $userId);
         $request->request->set('updated', date('Y-m-d H:i:s'));
         $cart->update($request->all());
         return $cart;
@@ -107,11 +158,29 @@ class CartController extends Controller
      */
     public function destroy($id, Request $request)
     {
-        $sessionId = $request->header('X-AUTH-TOKEN', 0);
+        $sessionId = $request->header('X-AUTH-TOKEN', null);
 
-        $cart = Cart::where('id',$id)
-        ->where('sessionId', $sessionId)
-        ->first();
+        // Get userId from the bearerToken
+        if($request->bearerToken()){
+            $token = $request->bearerToken();
+            $v = DB::table('personal_access_tokens')->where('id', $token)->first();
+            $userId = DB::table('users')->select('id')->where('id', $v->tokenable_id)->first()->id;
+        }
+
+        if(!$userId && !$sessionId){
+            $response = array(
+                'message' => 'Invalid Request'
+            );
+            return response()->json($response, 400);
+        }
+
+        $db = DB::table('cart');
+        if($userId){
+            $db->where('userId', $userId);
+        }else{
+            $db->where('sessionId', $sessionId);
+        }
+        $cart = $db->first();
 
         if(!$cart){
             $response = array(
@@ -122,4 +191,9 @@ class CartController extends Controller
         
         return Cart::destroy($id);
     }
+
+    public function userdata(){
+        $id = auth()->guard('agent')->user()->id; // just id
+        return $id;
+     }
 }
