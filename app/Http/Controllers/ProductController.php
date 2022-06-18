@@ -47,7 +47,7 @@ class ProductController extends Controller
         ->select('p.*','c.name as categoryName')
         ->Join('categories as c', 'c.id', '=', 'p.categoryId')
         ->where('p.id', $product->id)
-        ->get();
+        ->first();
     }
 
     /**

@@ -16,7 +16,7 @@ class AuthControllerTest extends TestCase
     {
         $name = $this->faker->name;
         $email = $this->faker->safeEmail;
-        $password = $this->faker->password;
+        $password = $this->faker->asciify('**********');
 
         $response = $this->post('/api/register', [
             'name' => $name,
@@ -36,7 +36,7 @@ class AuthControllerTest extends TestCase
         // Create a user
         $name = $this->faker->name;
         $email = $this->faker->safeEmail;
-        $password = $this->faker->password;
+        $password = $this->faker->asciify('**********');
 
         $response = $this->post('/api/register', [
             'name' => $name,
@@ -62,19 +62,13 @@ class AuthControllerTest extends TestCase
         // Create a user
         $name = $this->faker->name;
         $email = $this->faker->safeEmail;
-        $password = $this->faker->password;
+        $password = $this->faker->asciify('**********');
 
         $response = $this->post('/api/register', [
             'name' => $name,
             'email' => $email,
             'password' => $password,
             'password_confirmation' => $password
-        ]);
-
-        // Login
-        $response = $this->post('/api/login', [
-            'email' => $email,
-            'password' => $password
         ]);
 
         $token = $response->baseResponse->original['token'];

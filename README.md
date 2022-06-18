@@ -21,6 +21,10 @@ API Routes:
 
 Unit Testing Commands:
 
+Run Individual tests for three controllers
 - php artisan test --testsuite=Unit --filter AuthControllerTest
 - php artisan test --testsuite=Unit --filter ProductControllerTest
 - php artisan test --testsuite=Unit --filter CartControllerTest
+
+Run all tests at once
+- php artisan test --testsuite=Unit
