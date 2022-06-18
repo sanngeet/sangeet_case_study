@@ -7,16 +7,28 @@ use Illuminate\Foundation\Testing\WithFaker;
 
 class CartControllerTest extends TestCase
 {
-    private $sessionId;
-
     /**
      * @return void
      * Get cart items by session id
      */
     public function test_cart_index()
     {
+        $sessionId = $this->faker->numerify('##########');
+        $quantity = $this->faker->numberBetween($min = 1, $max = 10);
+        $productId = $this->faker->numberBetween($min = 1, $max = 15);
+
+        // Add item to cart by sessionId
+        $response = $this->json('POST', '/api/cart', 
+        [
+            'productId' => $productId,
+            'quantity' => $quantity
+        ], [
+            'X-AUTH-TOKEN' => $sessionId,
+            'Accept' => "application/json"
+        ]);
+
         $response = $this->get('/api/cart',[
-            'X-AUTH-TOKEN' => "1234567890",
+            'X-AUTH-TOKEN' => $sessionId,
             'Accept' => "application/json"
         ]);
         $response->assertStatus(200);
@@ -29,7 +41,7 @@ class CartControllerTest extends TestCase
     use withFaker;
     public function test_cart_store()
     {   
-        $this->sessionId = $this->faker->numerify('##########');
+        $sessionId = $this->faker->numerify('##########');
         $quantity = $this->faker->numberBetween($min = 1, $max = 10);
         $productId = $this->faker->numberBetween($min = 1, $max = 15);
 
@@ -38,7 +50,7 @@ class CartControllerTest extends TestCase
             'productId' => $productId,
             'quantity' => $quantity
         ], [
-            'X-AUTH-TOKEN' => $this->sessionId,
+            'X-AUTH-TOKEN' => $sessionId,
             'Accept' => "application/json"
         ]);
       
@@ -52,7 +64,7 @@ class CartControllerTest extends TestCase
     use WithFaker;
     public function test_cart_update()
     {   
-        $this->sessionId = $this->faker->numerify('##########');
+        $sessionId = $this->faker->numerify('##########');
         $quantity = $this->faker->numberBetween($min = 1, $max = 10);
         $productId = $this->faker->numberBetween($min = 1, $max = 15);
 
@@ -62,7 +74,7 @@ class CartControllerTest extends TestCase
             'productId' => $productId,
             'quantity' => $quantity
         ], [
-            'X-AUTH-TOKEN' => $this->sessionId,
+            'X-AUTH-TOKEN' => $sessionId,
             'Accept' => "application/json"
         ]);
         
@@ -73,7 +85,7 @@ class CartControllerTest extends TestCase
         [
             'quantity' => $quantity
         ], [
-            'X-AUTH-TOKEN' => $this->sessionId,
+            'X-AUTH-TOKEN' => $sessionId,
             'Accept' => "application/json"
         ]);
         $response->assertStatus(200);
@@ -86,7 +98,7 @@ class CartControllerTest extends TestCase
     use WithFaker;
     public function test_cart_destroy()
     {   
-        $this->sessionId = $this->faker->numerify('##########');
+        $sessionId = $this->faker->numerify('##########');
         $quantity = $this->faker->numberBetween($min = 1, $max = 10);
         $productId = $this->faker->numberBetween($min = 1, $max = 15);
 
@@ -96,7 +108,7 @@ class CartControllerTest extends TestCase
             'productId' => $productId,
             'quantity' => $quantity
         ], [
-            'X-AUTH-TOKEN' => $this->sessionId,
+            'X-AUTH-TOKEN' => $sessionId,
             'Accept' => "application/json"
         ]);
         
@@ -105,7 +117,7 @@ class CartControllerTest extends TestCase
        // Delete by cartId and sessionId
         $response = $this->json('DELETE', '/api/cart/' . $cartId, 
         [], [
-            'X-AUTH-TOKEN' => $this->sessionId,
+            'X-AUTH-TOKEN' => $sessionId,
             'Accept' => "application/json"
         ]);
         $response->assertStatus(200);
