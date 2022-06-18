@@ -24,7 +24,8 @@ class ProductControllerTest extends TestCase
      */
     public function test_product_show()
     {
-        $response = $this->get('/api/products/1');
+        $productId = $this->faker->numberBetween($min = 1, $max = 10);
+        $response = $this->get('/api/products/'.$productId);
         $response->assertStatus(200);
     }
 
