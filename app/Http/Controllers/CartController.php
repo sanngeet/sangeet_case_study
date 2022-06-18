@@ -44,12 +44,6 @@ class CartController extends Controller
         }
         $cart = $db->get();
 
-        // Return Error if no cart is found
-        if(!$cart){
-            $response = array('message' => 'Invalid Request');
-            return response()->json($response, 200);
-        }
-
         return $cart;
     }
 

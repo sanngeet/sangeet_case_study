@@ -77,6 +77,7 @@ class ProductController extends Controller
          // Get the product by ID
          $product = Product::find($id);
 
+         // Throw Error if the product doesn't exist
          if(!$product){
             return response()->json(['message' => 'Invalid Id'], 400);
          }
