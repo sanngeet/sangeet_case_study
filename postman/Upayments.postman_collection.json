@@ -1,0 +1,534 @@
+{
+	"info": {
+		"_postman_id": "37eb277c-b7d8-4b65-8162-ca5032eee6e8",
+		"name": "Upayments",
+		"description": "## **Ecommerce API Project**\n\n### Three main modules:\n\n*   **User**\n*   **Product**\n*   **Cart**",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17942108"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Ummer K\",\n    \"email\": \"sadfm@sdf\",\n    \"password\": \"12345678\",\n    \"password_confirmation\": \"12345678\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://upayments.test/api/register",
+							"protocol": "http",
+							"host": [
+								"upayments",
+								"test"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "17|i0ZM2lZLfH2nB5vJgp64py2Kuabtufe1ZvRgiuGu",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"karan@gmail.com\",\n    \"password\": \"12345678\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://upayments.test/api/login",
+							"protocol": "http",
+							"host": [
+								"upayments",
+								"test"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "18|mYOUrlBbwOon6rrdMlCBQF1xmRK2FlWcv7mr2tns",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://upayments.test/api/logout",
+							"protocol": "http",
+							"host": [
+								"upayments",
+								"test"
+							],
+							"path": [
+								"api",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Create Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "19|7Ln5HAAKEYlJdAlgepvRkAAlYjKXACzLZY3dtcJa",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"categoryId\": 4,\n    \"name\": \"Playstation 3\",\n    \"price\": 1,\n    \"description\": \"Beautiful Playstation\",\n    \"avatar\": \"https://picsum.photos/id/1/200/300\",\n    \"developerEmail\": \"ps@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://upayments.test/api/products",
+							"protocol": "http",
+							"host": [
+								"upayments",
+								"test"
+							],
+							"path": [
+								"api",
+								"products"
+							]
+						},
+						"description": "**Category names with Ids -- No API to add/edit/delete categories -- Table rows are added from the mysql workbench.**\n\n1 - Computers\n\n2 - Mobile Phones\n\n3 - Fashion\n\n4 - Games & Toys\n\n5 - Books\n\n6 - Personal Care\n\n7 - Pharmacy\n\n8 - Stationery"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "19|7Ln5HAAKEYlJdAlgepvRkAAlYjKXACzLZY3dtcJa",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"categoryId\": 4,\n    \"name\": \"Playstation 5\",\n    \"price\": 180,\n    \"description\": \"Beautiful Playstation\",\n    \"avatar\": \"https://picsum.photos/id/1/200/300\",\n    \"developerEmail\": \"ps@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://upayments.test/api/products/17",
+							"protocol": "http",
+							"host": [
+								"upayments",
+								"test"
+							],
+							"path": [
+								"api",
+								"products",
+								"17"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get One Product",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://upayments.test/api/products/1",
+							"protocol": "http",
+							"host": [
+								"upayments",
+								"test"
+							],
+							"path": [
+								"api",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Products",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://upayments.test/api/products",
+							"protocol": "http",
+							"host": [
+								"upayments",
+								"test"
+							],
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "19|7Ln5HAAKEYlJdAlgepvRkAAlYjKXACzLZY3dtcJa",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": "Sangeet token",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://upayments.test/api/products/14",
+							"protocol": "http",
+							"host": [
+								"upayments",
+								"test"
+							],
+							"path": [
+								"api",
+								"products",
+								"14"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cart",
+			"item": [
+				{
+					"name": "Add Cart Items",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "19|7Ln5HAAKEYlJdAlgepvRkAAlYjKXACzLZY3dtcJa",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-AUTH-TOKEN",
+								"value": "1234567890",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productId\": 3,\n    \"quantity\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://upayments.test/api/cart",
+							"protocol": "http",
+							"host": [
+								"upayments",
+								"test"
+							],
+							"path": [
+								"api",
+								"cart"
+							]
+						},
+						"description": "X-AUTH-TOKEN (sessionId) is mandatory for guest.\n\nBearer Token (access token) must be present for logged In users."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Cart Items - Guest",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "19|7Ln5HAAKEYlJdAlgepvRkAAlYjKXACzLZY3dtcJa",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-AUTH-TOKEN",
+								"value": "1234567890",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"quantity\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://upayments.test/api/cart/23",
+							"protocol": "http",
+							"host": [
+								"upayments",
+								"test"
+							],
+							"path": [
+								"api",
+								"cart",
+								"23"
+							]
+						},
+						"description": "X-AUTH-TOKEN (sessionId) is mandatory for guest.\n\nBearer Token (access token) must be present for logged In users."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cart Items - Guest",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "19|7Ln5HAAKEYlJdAlgepvRkAAlYjKXACzLZY3dtcJa",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-AUTH-TOKEN",
+								"value": "1234567890",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://upayments.test/api/cart",
+							"protocol": "http",
+							"host": [
+								"upayments",
+								"test"
+							],
+							"path": [
+								"api",
+								"cart"
+							]
+						},
+						"description": "X-AUTH-TOKEN (sessionId) is mandatory for guest.\n\nBearer Token (access token) must be present for logged In users."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Cart - Guest",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "19|7Ln5HAAKEYlJdAlgepvRkAAlYjKXACzLZY3dtcJa",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-AUTH-TOKEN",
+								"value": "1234567890",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://upayments.test/api/cart/20",
+							"protocol": "http",
+							"host": [
+								"upayments",
+								"test"
+							],
+							"path": [
+								"api",
+								"cart",
+								"20"
+							]
+						},
+						"description": "X-AUTH-TOKEN (sessionId) is mandatory for guest.\n\nBearer Token (access token) must be present for logged In users."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
