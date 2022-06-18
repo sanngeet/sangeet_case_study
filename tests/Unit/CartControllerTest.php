@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 
 class CartControllerTest extends TestCase
 {
+    use withFaker;
     /**
      * @return void
      * Get cart items by session id
@@ -38,7 +39,6 @@ class CartControllerTest extends TestCase
      * @return void
      * Add cart item by session id
      */
-    use withFaker;
     public function test_cart_store()
     {   
         $sessionId = $this->faker->numerify('##########');
@@ -61,7 +61,6 @@ class CartControllerTest extends TestCase
      * @return void
      * Update cart item by session id
      */
-    use WithFaker;
     public function test_cart_update()
     {   
         $sessionId = $this->faker->numerify('##########');
@@ -95,7 +94,6 @@ class CartControllerTest extends TestCase
      * @return void
      * Delete cart item by cart id and session id
      */
-    use WithFaker;
     public function test_cart_destroy()
     {   
         $sessionId = $this->faker->numerify('##########');

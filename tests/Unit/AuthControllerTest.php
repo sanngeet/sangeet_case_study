@@ -7,21 +7,22 @@ use Illuminate\Foundation\Testing\WithFaker;
 
 class AuthControllerTest extends TestCase
 {
+    use WithFaker;
     /**
      * Register a user
      * @return void
      */
-    use WithFaker;
     public function test_user_register()
     {
         $name = $this->faker->name;
         $email = $this->faker->safeEmail;
+        $password = $this->faker->password;
 
         $response = $this->post('/api/register', [
             'name' => $name,
             'email' => $email,
-            'password' => '12345678',
-            'password_confirmation' => '12345678'
+            'password' => $password,
+            'password_confirmation' => $password
         ]);
         $response->assertStatus(201);
     }
@@ -32,10 +33,57 @@ class AuthControllerTest extends TestCase
      */
     public function test_user_login()
     {
-        $response = $this->post('/api/login', [
-            'email' => 'sangeet@gmail.com',
-            'password' => '12345678'
+        // Create a user
+        $name = $this->faker->name;
+        $email = $this->faker->safeEmail;
+        $password = $this->faker->password;
+
+        $response = $this->post('/api/register', [
+            'name' => $name,
+            'email' => $email,
+            'password' => $password,
+            'password_confirmation' => $password
         ]);
+
+        // Login
+        $response = $this->post('/api/login', [
+            'email' => $email,
+            'password' => $password
+        ]);
+        $response->assertStatus(200);
+    }
+
+        /**
+     * Login user
+     * @return void
+     */
+    public function test_user_logout()
+    {
+        // Create a user
+        $name = $this->faker->name;
+        $email = $this->faker->safeEmail;
+        $password = $this->faker->password;
+
+        $response = $this->post('/api/register', [
+            'name' => $name,
+            'email' => $email,
+            'password' => $password,
+            'password_confirmation' => $password
+        ]);
+
+        // Login
+        $response = $this->post('/api/login', [
+            'email' => $email,
+            'password' => $password
+        ]);
+
+        $token = $response->baseResponse->original['token'];
+
+        // Logout
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+        ])->post('/api/logout', []);
+
         $response->assertStatus(200);
     }
 }
