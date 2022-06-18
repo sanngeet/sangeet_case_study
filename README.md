@@ -4,7 +4,7 @@ The sql file is present at "database" directory in the root folder.
 
 The API documentation (Postman Collection) is stored at "postman" directory in the root folder.
 
-API Routes:
+### API Routes:
 
 - User - Registration (public)
 - User - Login (public)
@@ -19,7 +19,7 @@ API Routes:
 - Cart - Get cart items by ID (public, x-auth-token / bearer token required)
 - Cart - Delete cart items by ID (public, x-auth-token / bearer token required)
 
-Unit Testing Commands:
+### Unit Testing Commands:
 
 Run Individual tests for three controllers
 - php artisan test --testsuite=Unit --filter AuthControllerTest
