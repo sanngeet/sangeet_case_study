@@ -66,7 +66,7 @@ class CartController extends Controller
         // Validate request
         $request->validate([
             'productId' => "required|numeric",
-            'quantity' => 'required|numeric|max:10'
+            'quantity' => 'required|numeric|min:1|max:10'
         ]);
 
         // Get userId from the bearerToken
@@ -121,7 +121,7 @@ class CartController extends Controller
         $sessionId = $request->header('X-AUTH-TOKEN', null);
 
         // Validate request
-        $request->validate(['quantity' => 'required|numeric|max:10']);
+        $request->validate(['quantity' => 'required|numeric|min:1|max:10']);
 
         // Get userId from the bearerToken
         if($request->bearerToken()){

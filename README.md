@@ -18,3 +18,9 @@ API Routes:
 - Cart - Update cart items quantity (public, x-auth-token / bearer token required)
 - Cart - Get cart items by ID (public, x-auth-token / bearer token required)
 - Cart - Delete cart items by ID (public, x-auth-token / bearer token required)
+
+Unit Testing Commands:
+
+- php artisan test --testsuite=Unit --filter AuthControllerTest
+- php artisan test --testsuite=Unit --filter ProductControllerTest
+- php artisan test --testsuite=Unit --filter CartControllerTest
