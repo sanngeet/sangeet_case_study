@@ -11,7 +11,7 @@
 			"name": "Auth",
 			"item": [
 				{
-					"name": "Register",
+					"name": "Register - Public Route",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -46,7 +46,7 @@
 					"response": []
 				},
 				{
-					"name": "Login",
+					"name": "Login - Public Route",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -91,7 +91,7 @@
 					"response": []
 				},
 				{
-					"name": "Logout",
+					"name": "Logout - Protected Route (Bearer Token Required)",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -141,7 +141,7 @@
 			"name": "Products",
 			"item": [
 				{
-					"name": "Create Product",
+					"name": "Create Product - Protected Route (Bearer Token Required)",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -187,7 +187,7 @@
 					"response": []
 				},
 				{
-					"name": "Update Product",
+					"name": "Update Product  - Protected Route (Bearer Token Required)",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -233,7 +233,7 @@
 					"response": []
 				},
 				{
-					"name": "Get One Product",
+					"name": "Get One Product  - Public Route",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -260,7 +260,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Products",
+					"name": "Get Products - Public Route",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -286,7 +286,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete Product",
+					"name": "Delete Product  - Protected Route (Bearer Token Required)",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -380,7 +380,7 @@
 					"response": []
 				},
 				{
-					"name": "Update Cart Items - Guest",
+					"name": "Update Cart Items",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -432,7 +432,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Cart Items - Guest",
+					"name": "Get Cart Items",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -486,7 +486,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete Cart - Guest",
+					"name": "Delete Cart",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -528,7 +528,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"description": "**Either of the following token is required for all the /cart routes:**\n\n*   X-AUTH-TOKEN (sessionId)\n*   Bearer Token (accessToken)"
 		}
 	]
 }
