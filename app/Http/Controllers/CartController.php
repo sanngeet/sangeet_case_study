@@ -31,9 +31,7 @@ class CartController extends Controller
 
         // Return Error if userId and sessionId are missing
         if(!$userId && !$sessionId){
-            $response = array(
-                'message' => 'Invalid Request'
-            );
+            $response = array('message' => 'Invalid Request');
             return response()->json($response, 400);
         }
 
@@ -48,9 +46,7 @@ class CartController extends Controller
 
         // Return Error if no cart is found
         if(!$cart){
-            $response = array(
-                'message' => 'Invalid Request'
-            );
+            $response = array('message' => 'Invalid Request');
             return response()->json($response, 200);
         }
 
